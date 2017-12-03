@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://xbu.me/page/about/</loc>
+    <lastmod>2017-11-01T13:18:45+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/page/resources/</loc>
+    <lastmod>2017-11-01T13:18:45+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/page/projects/</loc>
+    <lastmod>2017-11-01T13:17:56+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/article/benchmarking-suricata-in-different-isolation-systems-using-tcpreplay/</loc>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/quote/andy-grove-paranoid/</loc>
+    <lastmod>2016-03-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/article/onedrived/</loc>
+    <lastmod>2015-12-25T06:03:38-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/article/gitlab-ag/</loc>
+    <lastmod>2015-01-14T01:30:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/gallery/stockpulse-wp8/</loc>
+    <lastmod>2014-12-28T08:43:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/article/ie-cache-location-ramdisk-metro-app-crash/</loc>
+    <lastmod>2014-10-04T22:58:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/code/remove-the-ad-of-outlook-com-with-stylish/</loc>
+    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/code/reduce-margin-between-tabs-and-title-bar-in-firefox-australis/</loc>
+    <lastmod>2014-04-29T02:34:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/code/a-simple-memory-leak-checker/</loc>
+    <lastmod>2014-04-18T03:06:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/link/gitignore-io/</loc>
+    <lastmod>2014-02-23T06:14:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/article/setting-up-a-ubuntu-server/</loc>
+    <lastmod>2014-02-09T03:31:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/code/a-comparison-of-php-micro-frameworks/</loc>
+    <lastmod>2014-02-03T00:46:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/link/stackedit-io/</loc>
+    <lastmod>2014-01-09T01:28:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/link/titillium-web-font/</loc>
+    <lastmod>2014-01-07T19:29:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/article/purdue-cs240-autograder/</loc>
+    <lastmod>2013-12-17T05:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/article/emulating-raspberry-pi-with-qemu/</loc>
+    <lastmod>2013-11-16T07:06:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/author/andy-grove/</loc>
+    <lastmod>2016-03-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/</loc>
+    <lastmod>2017-11-01T13:18:45+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/article/</loc>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/author/</loc>
+    <lastmod>2016-03-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/autograding/</loc>
+    <lastmod>2013-12-17T05:00:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/code/</loc>
+    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/css/</loc>
+    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/editor/</loc>
+    <lastmod>2014-01-09T01:28:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/emulation/</loc>
+    <lastmod>2013-11-16T07:06:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/firefox/</loc>
+    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/font/</loc>
+    <lastmod>2014-01-07T19:29:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/font/</loc>
+    <lastmod>2014-01-07T19:29:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/gallery/</loc>
+    <lastmod>2014-12-28T08:43:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/git/</loc>
+    <lastmod>2015-01-14T01:30:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/gitignore/</loc>
+    <lastmod>2014-02-23T06:14:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/ie/</loc>
+    <lastmod>2014-10-04T22:58:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/link/</loc>
+    <lastmod>2014-02-23T06:14:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/markdown/</loc>
+    <lastmod>2014-01-09T01:28:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/microsoft/</loc>
+    <lastmod>2015-12-25T06:03:38-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/mysql/</loc>
+    <lastmod>2014-02-09T03:31:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/networking/</loc>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/nginx/</loc>
+    <lastmod>2014-02-09T03:31:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/onedrive/</loc>
+    <lastmod>2015-12-25T06:03:38-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/onedrived/</loc>
+    <lastmod>2015-12-25T06:03:38-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/outlook/</loc>
+    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/page/</loc>
+    <lastmod>2017-11-01T13:18:45+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/php/</loc>
+    <lastmod>2014-02-09T03:31:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/project/</loc>
+    <lastmod>2015-12-25T06:03:38-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/project/</loc>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/purdue/</loc>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/qemu/</loc>
+    <lastmod>2013-11-16T07:06:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/quote/</loc>
+    <lastmod>2016-03-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/quote/</loc>
+    <lastmod>2016-03-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/raspberry-pi/</loc>
+    <lastmod>2013-11-16T07:06:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/resource/</loc>
+    <lastmod>2014-02-23T06:14:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/suricata/</loc>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/</loc>
+    <lastmod>2013-12-17T05:00:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/titillium/</loc>
+    <lastmod>2014-01-07T19:29:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/tool/</loc>
+    <lastmod>2014-02-23T06:14:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/troubleshoot/</loc>
+    <lastmod>2014-10-04T22:58:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/troubleshooting/</loc>
+    <lastmod>2014-10-04T22:58:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/tutorial/</loc>
+    <lastmod>2014-02-09T03:31:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/ubuntu/</loc>
+    <lastmod>2014-02-09T03:31:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/windows/</loc>
+    <lastmod>2014-10-04T22:58:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/author/xbu/</loc>
+    <lastmod>2017-11-01T13:18:45+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

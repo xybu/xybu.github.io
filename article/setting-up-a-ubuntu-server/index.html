@@ -1,0 +1,621 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="author" content="Xiangyu Bu">
+        <meta name="description" content="Xiangyu&#39;s personal blog.">
+        <meta name="keywords" content="xiangyu,bu,xbu,blog,tech,onedrived">
+        <meta name="generator" content="Hugo 0.31.1" />
+
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+
+        <link rel="stylesheet" href="/dist/theme.css">
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.2.1/dist/instantsearch.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.2.1/dist/instantsearch-theme-algolia.min.css">
+
+
+        
+        <title>Another Dimension  | Set up Ubuntu &#43; PHP7 &#43; Nginx &#43; MySQL Stack</title>
+    </head>
+    <body class="bilberry-hugo-theme">
+        
+<nav class="permanentTopNav">
+
+    <div class="container">
+        <ul class="topnav">
+            
+                
+                    <li><a href="/page/about/">About</a></li>
+                
+            
+                
+                    <li><a href="/page/resources/">Resources</a></li>
+                
+            
+                
+                    <li><a href="/page/projects/">Projects</a></li>
+                
+            
+        </ul>
+
+        
+
+         <div id="search-box" class="search">
+            <i class="fa fa-search"></i>
+            <input id="search" type="text" placeholder="Search ...">
+        </div>
+        
+    </div>
+</nav>
+
+
+        <header>
+    <div class="container">
+        <div class="logo">
+            <a href="/" class="logo">
+                
+                    <img src="https://www.gravatar.com/avatar/661d6e52bcde90223b84e56c54c568f6?d=mm&size=200" alt="">
+                
+
+                <span class="overlay"><i class="fa fa-home"></i></span>
+            </a>
+        </div>
+        <div class="titles">
+            <h3 class="title"><a href="/">Another Dimension</a></h3>
+            
+                <span class="subtitle">Xiangyu&#39;s personal blog.</span>
+            
+        </div>
+
+        
+        <div class="toggler permanentTopNav">
+        
+            <i class="fa fa-bars" aria-hidden="true"></i>
+        </div>
+    </div>
+</header>
+
+
+        <div class="main container">
+            
+     
+    <div class="article-wrapper u-cf single">
+        
+            <a class="bubble" href="/article/setting-up-a-ubuntu-server/">
+    <i class="fa fa-fw fa-pencil"></i>
+</a>
+
+<article class="default article">
+    
+
+    <div class="content">
+    <h3><a href="/article/setting-up-a-ubuntu-server/">Set up Ubuntu &#43; PHP7 &#43; Nginx &#43; MySQL Stack</a></h3>
+    <div class="meta">
+        <span class="date moment">2014-02-09</span>
+
+        
+            <span class="categories">
+                
+                    <a href="/categories/tutorial">tutorial</a>
+                
+            </span>
+        
+
+        
+            <span class="author"><a href="/author/xbu">xbu</a></span>
+        
+    </div>
+
+    
+        <p>This tutorial introduces how to set up a LEMP (Linux + Nginx + MySQL + PHP-FPM) stack on Ubuntu Server from scratch.</p>
+
+<p></p>
+
+<blockquote>
+<p>Update on Dec 24, 2015: added PHP7.0-FPM instructions.</p>
+</blockquote>
+
+<h2 id="upgrade-to-latest-ubuntu-distro-optional">Upgrade to Latest Ubuntu Distro (Optional)</h2>
+
+<p>If your server runs an older version of Ubuntu Server and you want to upgrade to the latest version, you will need to do the following with root permission:</p>
+
+<pre><code class="language-bash"># get root permission
+sudo -s
+
+# update package lists
+apt-get update
+apt-get dist-upgrade
+
+# install update manager command-line tool
+apt-get install update-manager-core
+
+# start upgrade
+do-release-upgrade -d
+</code></pre>
+
+<h2 id="check-basic-settings">Check Basic Settings</h2>
+
+<p>Here are some basic configurations you need to do at the beginning.</p>
+
+<h3 id="time-and-timezone">Time and Timezone</h3>
+
+<pre><code># set up timezone
+sudo dpkg-reconfigure tzdata
+
+# synchronize time (requires ntpdate package)
+sudo apt-get install -y ntpdate
+sudo ntpdate ntp.ubuntu.com
+</code></pre>
+
+<h3 id="system-locale">System Locale</h3>
+
+<p>If you don&rsquo;t have Unicode as default locale, something could go wrong when like, you add PPAs / repositories or use some Python scripts. There are workarounds for that, but why not Unicode? So check the locale first. You may want to adjust the locale string to your owns.</p>
+
+<pre><code class="language-bash"># print locale information
+locale -a
+
+# generate English UTF-8 locale 
+sudo locale-gen en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# if other UTF-8 locales are available, simply switch to them.
+# For example,
+# export LANG=C.UTF-8
+
+# set default locale to English (US)
+touch /etc/default/locale
+echo LANG=&quot;en_US.UTF-8&quot; &gt; /etc/default/locale
+echo LANGUAGE=&quot;en_US:en&quot; &gt;&gt; /etc/default/locale
+</code></pre>
+
+<p>This will fix errors like</p>
+
+<pre><code>UnicodeDecodeError: 'ascii' codec can't decode byte 0x* in position *: ordinal not in range(128)
+</code></pre>
+
+<h3 id="some-necessary-packages">Some Necessary Packages</h3>
+
+<p>Before proceeding, do a <code>sudo apt-get update &amp;&amp; sudo apt-get upgrade</code> to upgrade all current packages to latest.</p>
+
+<p>Then install the following packages so that you can add apt repositories (i.e., use <code>add-apt-repository</code> command later).</p>
+
+<pre><code>sudo apt-get install python-software-properties software-properties-common
+</code></pre>
+
+<h4 id="gpg-error-no-pubkey">GPG Error: NO_PUBKEY?</h4>
+
+<p>This GPG error might happen if you are upgrading to Ubuntu 14.04 LTS:</p>
+
+<pre><code>W:GPG error:http://archive.ubuntu.com trusty-updates Release: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 40976EAF437D05B5 NO_PUBKEY 3B4FE6ACC0B21F32
+</code></pre>
+
+<p>To solve this simply import the public keys listed in the error prompt.</p>
+
+<pre><code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+</code></pre>
+
+<p>After importing the keys, rerun the apt-get command. If aptitude says it requires installation of &ldquo;untrusted&rdquo; packages, clean the cache as <a href="http://askubuntu.com/questions/184117/requires-installation-of-untrusted-packages">this topic</a> says.</p>
+
+<h2 id="setup-lemp-stack">Setup LEMP Stack</h2>
+
+<p>Note that this section only addresses installation, not configuration. <a href="The package &quot;software-properties-common&quot; is needed by the command &quot;add-apt-repository&quot;.">Here is a more comprehensive tutorial about setting up LEMP stack.</a></p>
+
+<h3 id="install-latest-nginx">Install Latest Nginx</h3>
+
+<p>Ubuntu by default seldom ships the latest version of Nginx. To use the latest stable version, according to <a href="http://wiki.nginx.org/Install">http://wiki.nginx.org/Install</a></p>
+
+<pre><code>sudo -s # Use root permission
+add-apt-repository ppa:nginx/stable
+apt-get update
+apt-get install nginx-extras
+</code></pre>
+
+<h3 id="install-latest-mysql">Install Latest MySQL</h3>
+
+<p>The default version of MySQL on Ubuntu 14.04 LTS is 5.5, but MySQL 5.6 is actually available through universe channel:</p>
+
+<pre><code>sudo apt-get install mysql-client-5.6 mysql-server-5.6
+</code></pre>
+
+<p>It will prompt you to enter MySQL root password after installation.</p>
+
+<h3 id="install-latest-php-fpm">Install Latest PHP-FPM</h3>
+
+<p>Note that add-apt-repository is broken on non-UTF-8 locales. For workaround, refer <a href="https://launchpad.net/~ondrej/+archive/ubuntu/php-7.0">here</a>.</p>
+
+<p>If you want PHP 5 (5.6) only,</p>
+
+<pre><code>sudo add-apt-repository ppa:ondrej/php5-5.6
+sudo apt-get install php5-common php5-fpm php5-dev php5-mysql php5-curl php5-geoip php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-ming php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl php5-apcu
+</code></pre>
+
+<p>If you want PHP 7 only,</p>
+
+<pre><code>sudo add-apt-repository ppa:ondrej/php-7.0
+sudo apt-get install php7.0-fpm php7.0-mysql php7.0-json
+# and more you may need
+</code></pre>
+
+<p>If you need PHP 5 and PHP 7 coexist,</p>
+
+<pre><code>sudo add-apt-repository ppa:ondrej/php
+# and install packages
+</code></pre>
+
+<p>And for a performance boost, don&rsquo;t forget to enable Zend OPcache and APCu in <code>php.ini</code>, which can be checked by inspecting the  output of command <code>php -v</code>, and calibrate the time on the server. To enable OPcache and APCu, refer to &gt;this article&lt;. If higher performance is desired, one may prefer <a href="http://hhvm.com">Facebook HipHop VM</a> to official Zend PHP Engine.</p>
+
+<h3 id="other-packages">Other Packages</h3>
+
+<p>Other packages that may be useful including</p>
+
+<ul>
+<li><p>smtp server packages like <code>ssmtp</code>, if you need smtp on your server</p></li>
+
+<li><p>access control package like <code>acl</code>, if you need more concrete permission control</p></li>
+</ul>
+
+<h2 id="secure-the-server">Secure the Server</h2>
+
+<h3 id="secure-php">Secure PHP</h3>
+
+<p>Inside the effective php.ini on the host (For PHP5-FPM, normally at &ldquo;/etc/php5/fpm/php.ini&rdquo;), find the param <code>cgi.fix_pathinfo</code> and change its value to <code>0</code>. <a href="http://stackoverflow.com/questions/15493207/php-what-are-the-effects-of-cgi-fix-pathinfo-1-in-php-ini-on-a-webserver">This post discusses how an attacker can initiate an attack by exploiting this param.</a></p>
+
+<pre><code>cgi.fix_pathinfo=0
+</code></pre>
+
+<h3 id="ufw">ufw</h3>
+
+<p>ufw is the &ldquo;firewall&rdquo; shipped by Ubuntu. Here is a comprehensive tutorial: <a href="http://www.thefanclub.co.za/how-to/how-secure-ubuntu-1204-lts-server-part-1-basics">http://www.thefanclub.co.za/how-to/how-secure-ubuntu-1204-lts-server-part-1-basics</a></p>
+
+<p>Depending on the jobs of your server, you need to grant in / out access to different ports. Besides, be careful if your connection to the server depends on a port. Making changes effective before allowing that port connection may result in termination of your existing connection. <em>In particular, if you use a non-default SSH port, be 100% sure to enable it before making ufw changes effective.</em> (For how to change the SSH port, check the related section near the end of this post.)</p>
+
+<p>For example, for a web server that also sends emails and accepts ssh connection, the following ports should be open:</p>
+
+<pre><code># If you haven't installed ufw
+sudo apt-get install ufw
+
+# YOUR_CUSTOM_SSH_PORT is either &quot;ssh&quot; (alias for 22) or the port number.
+sudo ufw allow YOUR_CUSTOM_SSH_PORT
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw allow smtp
+sudo ufw allow out 53
+</code></pre>
+
+<p>Pay attention that ufw may disable outgoing ports which results in failures of commands like apt-get or git because they cannot connect to DNS server. Enabling outgoing traffic on port 53 should solve this.</p>
+
+<p>Another issue is that ufw disables most outgoing traffic, including traffic between different ports of the same machine, making Wordpress plugins like Akismet and JetPack behave incorrectly.</p>
+
+<p>To enable outgoing traffic,</p>
+
+<pre><code>iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+</code></pre>
+
+<p>To make sure ufw not disable the server itself:</p>
+
+<pre><code>sudo ufw allow in from YOUR_SERVER_IP_ADDR
+</code></pre>
+
+<p>Some OpenVZ-contained  ipv6 hosts may have issues with ufw, <a href="http://blog.kylemanna.com/linux/2013/04/26/ufw-vps/">here is an article discussing the solution</a>.</p>
+
+<h3 id="modsecurity">ModSecurity</h3>
+
+<p>To install ModSecurity on Nginx one needs to start from compiling the code as standalone module. The guides are available at <a href="https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual#Installation_for_NGINX">https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual#Installation_for_NGINX</a>.</p>
+
+<p>Before you start, beware that the compilation process may complain &ldquo;configure: error: couldn&rsquo;t find APXS&rdquo; because it relies on this Apache module. I don&rsquo;t want Apache at all, so I personally skip this step&hellip;</p>
+
+<p>ModSecurity requires the following packages to compile:</p>
+
+<pre><code>sudo apt-get install libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev
+sudo apt-get install libpcre-ocaml-dev autoconf make automake libtool
+sudo apt-get install build-essential git libpcre3 libpcre3-dev libpcrecpp0 libssl-dev zlib1g-dev
+# should be comprehensive enough
+</code></pre>
+
+<h3 id="nginx-httplimitreqmodule">Nginx: HttpLimitReqModule</h3>
+
+<p>ngx_http_limit_req_module (HttpLimitReqModule) is a Nginx module that works similar to Apache&rsquo;s ModEvasive. You can use it to limit the number of requests for a given session (per a defined key), thereby reducing the possibility of server overload or DDoS attacks. When the number of session requests exceeds the ceiling, a HTTP 503 error will be returned.</p>
+
+<h4 id="step-1-create-a-limit-zone">Step 1: Create a Limit zone</h4>
+
+<pre><code>sudo vim /etc/nginx/nginx.conf
+</code></pre>
+
+<p>Inside the http container, add</p>
+
+<pre><code>limit_req_zone  $binary_remote_addr  zone=one:10m   rate=2r/s;
+</code></pre>
+
+<p>For example,</p>
+
+<pre><code>http {
+    limit_req_zone  $binary_remote_addr  zone=one:10m   rate=2r/s;
+    # YOUR ORIGINAL CONTENT
+    # FOLLOWS
+}
+</code></pre>
+
+<p>where <code>one</code> is the name of the zone, and <code>10m</code> means that the storage is 10MB in size. Each state marked by <code>$binary_remote_addr</code> takes 64B, so 10MB should be plenty for guests. The rate is set to be 2 requests per second; other units include r/m, etc.</p>
+
+<h4 id="step-2-make-the-limit-zone-effective">Step 2: Make the Limit zone effective</h4>
+
+<p>Add the limit zone to the http {}, server {}, location {} containers where you want it to be effective:</p>
+
+<pre><code>limit_req zone=one burst=6;
+</code></pre>
+
+<p>In each second, the third (2+1, where 2 is the max number of requests in the specified time span, which in our example, is <code>rate=2r/s</code>) to sixth (because <code>burst=6</code>) requests, if any, will be queued, and if there are more than six requests, a HTTP 503 will be returned.</p>
+
+<p>More details can be found at Nginx&rsquo;s document page <a href="http://nginx.org/en/docs/http/ngx_http_limit_req_module.html">http://nginx.org/en/docs/http/ngx_http_limit_req_module.html</a>.</p>
+
+<h3 id="use-a-non-default-port-of-ssh-connection">Use a Non-Default Port of SSH Connection</h3>
+
+<p>To change the port number used by <code>sshd</code>,</p>
+
+<pre><code>sudo vim /etc/ssh/sshd_config
+</code></pre>
+
+<p>Find the line <code>Port 22</code> and change the &ldquo;22&rdquo; to the port number you want to use.</p>
+
+<p>You can also disable root login there.</p>
+
+<h3 id="add-users-and-set-file-access-control-permissions">Add Users and Set File Access Control Permissions</h3>
+
+<p>There is no universal command for this step, but the target is to isolate tasks to reduce the possibility of compromising.</p>
+
+<h2 id="housekeeping">Housekeeping</h2>
+
+<p>Finally there is some housekeeping work.</p>
+
+<pre><code>sudo apt-get autoremove
+sudo apt-get autoclean
+</code></pre>
+
+<p>That&rsquo;s it!</p>
+
+<h2 id="more-readings">More Readings</h2>
+
+<ul>
+<li><a href="http://konradpodgorski.com/blog/2013/10/23/guide-how-to-configure-server-for-symfony/">http://konradpodgorski.com/blog/2013/10/23/guide-how-to-configure-server-for-symfony/</a></li>
+</ul>
+    
+</div>
+
+    
+    
+    <div class="tags">
+        <i class="fa fa-tags"></i>
+        
+            <a href="/tags/ubuntu">ubuntu</a>
+        
+            <a href="/tags/php">php</a>
+        
+            <a href="/tags/nginx">nginx</a>
+        
+            <a href="/tags/mysql">mysql</a>
+        
+    </div>
+    
+
+
+</article>
+
+        
+    </div>
+
+    <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "xbu" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+     
+
+        </div>
+
+        <footer>
+    <div class="container">
+        <div class="recent-posts">
+            <strong>Latest posts</strong>
+                <ul>
+                
+                    <li>
+                        <a href="/article/benchmarking-suricata-in-different-isolation-systems-using-tcpreplay/">Benchmarking Suricata in Different Isolation Systems Using TCPreplay</a>
+                    </li>
+                
+                    <li>
+                        <a href="/quote/andy-grove-paranoid/">Only the Paranoid Survive</a>
+                    </li>
+                
+                    <li>
+                        <a href="/article/onedrived/">onedrived - Microsoft OneDrive client for Linux</a>
+                    </li>
+                
+                    <li>
+                        <a href="/article/gitlab-ag/">gitlab-ag - Combining Git and Autograding</a>
+                    </li>
+                
+                    <li>
+                        <a href="/gallery/stockpulse-wp8/">StockPulse for WP8 - a StockTwits client for WP8</a>
+                    </li>
+                
+                    <li>
+                        <a href="/article/ie-cache-location-ramdisk-metro-app-crash/">IE Cache Location and Metro App Crash</a>
+                    </li>
+                
+                    <li>
+                        <a href="/code/remove-the-ad-of-outlook-com-with-stylish/">Remove the AD of Outlook.com with Stylish</a>
+                    </li>
+                
+                </ul>
+        </div>
+
+        <div class="categories">
+            <strong>Categories</strong>
+
+            
+                <ul>
+                
+                    <li>
+                        <a href="/categories/editor">Editor (1)</a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/font">Font (1)</a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/project">Project (5)</a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/resource">Resource (3)</a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/tool">Tool (2)</a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/troubleshooting">Troubleshooting (1)</a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/tutorial">Tutorial (1)</a>
+                    </li>
+                
+                </ul>
+            
+        </div>
+
+        <div class="social-media">
+            <strong>Social media</strong>
+
+            
+                <a href="https://www.facebook.com/xiangyu.bu" target="_blank"><i class="fa fa-facebook"></i></a>
+            
+            
+            
+            
+            
+                <a href="https://www.instagram.com/xybu92/" target="_blank"><i class="fa fa-instagram"></i></a>
+            
+            
+            
+            
+            
+                <a href="https://github.com/xybu" target="_blank"><i class="fa fa-github"></i></a>
+            
+        </div>
+    </div>
+</footer>
+
+<div class="credits">
+    <div class="container">
+        <div class="copyright">
+            <a href="https://github.com/Lednerb" target="_blank">&copy; 2017 by Lednerb </a>
+        </div>
+        <div class="author">
+            <a href="https://github.com/Lednerb/bilberry-hugo-theme" target="_blank">Bilberry Hugo Theme</a>
+        </div>
+    </div>
+</div>
+
+
+        
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-47913300-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+        
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js" integrity="sha256-TbOIe++NbC9P3KTtUMJ5wcROlBdnRqrPleLdpPg3xxE=" crossorigin="anonymous"></script>
+        <script src="/dist/theme.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $(".moment").each(function() {
+                    $(this).text(
+                        moment( $(this).text() )
+                            .locale( "en" )
+                            .format('LL')
+                    );
+                });
+
+                $(".footnote-return sup").html("[return]")
+            })
+        </script>
+
+        
+            
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.29.0/autocomplete.jquery.min.js" integrity="sha256-qUqrH6CxKeU+3ClSSiq0GGnYjoKmfLhNO4tFoTCay5c=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.24.5/algoliasearch.min.js" integrity="sha256-vUvLcn3X0cXhote4PNwW6d+fzjJR0hoD+yGFeVaElew=" crossorigin="anonymous"></script>
+
+<script>
+    var client = algoliasearch("QWH90AJ7UA", "2b55d53047105f6dd3e8d30f7aadc3e9");
+    var index = client.initIndex("default-content");
+
+    $('#search').autocomplete({ hint: false, autoselect: true, debug: false },
+      [
+        {
+          source: $.fn.autocomplete.sources.hits(index, { hitsPerPage: 5 }),
+          displayKey: function(suggestion) {
+            return suggestion.title || suggestion.author
+          },
+          templates: {
+            suggestion: function(suggestion) {
+                return "<span class='entry " + suggestion.type + "'>"
+                      + "<span class='title'>" + suggestion.title + "</span>"
+                      + "<span class='fa fa-fw " + suggestion.iconClass + "'></span>"
+                  + "</span>"
+                ;
+            },
+            empty: function() {
+              return "<span class='empty'>Nothing found.</span>"
+            },
+            footer: function() {
+              return '<div class="branding">Powered by <img src="https://www.algolia.com/static_assets/images/press/downloads/algolia-logo-light.svg" /></div>'
+            }
+
+          },
+        }
+      ])
+      .on('autocomplete:selected', function(event, suggestion, dataset) {
+        window.location = (suggestion.url);
+      })
+      .keypress(function (event, suggestion) {
+        if (event.which == 13) {
+          window.location = (suggestion.url);
+        }
+      });
+</script>
+
+        
+
+
+    </body>
+</html>
