@@ -327,6 +327,16 @@ ga('send', 'pageview');
 
 
         
+        
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+</script>
+
+        
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js" integrity="sha256-TbOIe++NbC9P3KTtUMJ5wcROlBdnRqrPleLdpPg3xxE=" crossorigin="anonymous"></script>
         <script src="/dist/theme.js"></script>
@@ -352,7 +362,7 @@ ga('send', 'pageview');
 
 <script>
     var client = algoliasearch("QWH90AJ7UA", "2b55d53047105f6dd3e8d30f7aadc3e9");
-    var index = client.initIndex("default-content");
+    var index = client.initIndex("xbu_me_index");
 
     $('#search').autocomplete({ hint: false, autoselect: true, debug: false },
       [
