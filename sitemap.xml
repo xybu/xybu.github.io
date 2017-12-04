@@ -23,6 +23,11 @@
   </url>
   
   <url>
+    <loc>https://xbu.me/link/hack-font/</loc>
+    <lastmod>2016-08-07T00:11:00-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xbu.me/quote/andy-grove-paranoid/</loc>
     <lastmod>2016-03-22T00:00:00+00:00</lastmod>
   </url>
@@ -110,6 +115,12 @@
   </url>
   
   <url>
+    <loc>https://xbu.me/tags/app/</loc>
+    <lastmod>2014-12-28T08:43:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://xbu.me/article/</loc>
     <lastmod>2016-09-16T02:39:00-05:00</lastmod>
     <priority>0</priority>
@@ -128,6 +139,18 @@
   </url>
   
   <url>
+    <loc>https://xbu.me/tags/benchmark/</loc>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/c/</loc>
+    <lastmod>2014-04-18T03:06:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://xbu.me/categories/</loc>
     <priority>0</priority>
   </url>
@@ -139,14 +162,20 @@
   </url>
   
   <url>
-    <loc>https://xbu.me/tags/css/</loc>
-    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
+    <loc>https://xbu.me/tags/comparison/</loc>
+    <lastmod>2014-02-03T00:46:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xbu.me/categories/editor/</loc>
-    <lastmod>2014-01-09T01:28:00-05:00</lastmod>
+    <loc>https://xbu.me/tags/csharp/</loc>
+    <lastmod>2014-12-28T08:43:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/css/</loc>
+    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -164,13 +193,13 @@
   
   <url>
     <loc>https://xbu.me/tags/font/</loc>
-    <lastmod>2014-01-07T19:29:00-05:00</lastmod>
+    <lastmod>2016-08-07T00:11:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xbu.me/categories/font/</loc>
-    <lastmod>2014-01-07T19:29:00-05:00</lastmod>
+    <loc>https://xbu.me/tags/framework/</loc>
+    <lastmod>2014-02-03T00:46:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -193,6 +222,18 @@
   </url>
   
   <url>
+    <loc>https://xbu.me/tags/hack/</loc>
+    <lastmod>2016-08-07T00:11:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/categories/hack/</loc>
+    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://xbu.me/tags/ie/</loc>
     <lastmod>2014-10-04T22:58:00-05:00</lastmod>
     <priority>0</priority>
@@ -200,7 +241,13 @@
   
   <url>
     <loc>https://xbu.me/link/</loc>
-    <lastmod>2014-02-23T06:14:00+00:00</lastmod>
+    <lastmod>2016-08-07T00:11:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/linux/</loc>
+    <lastmod>2015-12-25T06:03:38-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -266,7 +313,7 @@
   
   <url>
     <loc>https://xbu.me/tags/project/</loc>
-    <lastmod>2015-12-25T06:03:38-05:00</lastmod>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -279,6 +326,12 @@
   <url>
     <loc>https://xbu.me/tags/purdue/</loc>
     <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/python/</loc>
+    <lastmod>2015-12-25T06:03:38-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -308,7 +361,7 @@
   
   <url>
     <loc>https://xbu.me/categories/resource/</loc>
-    <lastmod>2014-02-23T06:14:00+00:00</lastmod>
+    <lastmod>2016-08-07T00:11:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -320,19 +373,13 @@
   
   <url>
     <loc>https://xbu.me/tags/</loc>
-    <lastmod>2013-12-17T05:00:00-05:00</lastmod>
+    <lastmod>2014-12-28T08:43:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xbu.me/tags/titillium/</loc>
     <lastmod>2014-01-07T19:29:00-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://xbu.me/categories/tool/</loc>
-    <lastmod>2014-02-23T06:14:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -357,6 +404,12 @@
   <url>
     <loc>https://xbu.me/tags/ubuntu/</loc>
     <lastmod>2014-02-09T03:31:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://xbu.me/tags/virtualization/</loc>
+    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
