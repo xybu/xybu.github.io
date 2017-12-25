@@ -19,7 +19,7 @@
 
 
         
-        <title>Another Dimension  | Php</title>
+        <title>Another Dimension  | Performance Characterization of Suricata&#39;s Thread Models</title>
     </head>
     <body class="bilberry-hugo-theme">
         
@@ -82,32 +82,25 @@
 
         <div class="main container">
             
-    
-    
-        <div class="article-wrapper u-cf">
-            
-                <a class="bubble" href="/article/setting-up-a-ubuntu-server/">
+     
+    <div class="article-wrapper u-cf single">
+        
+            <a class="bubble" href="/article/performance-characterization-of-suricata-thread-models/">
     <i class="fa fa-fw fa-pencil"></i>
 </a>
 
 <article class="default article">
     
-    <div class="featured-image">
-        <a href="/article/setting-up-a-ubuntu-server/">
-            <img src="/images/ubuntu-logo14.png" alt="">
-        </a>
-    </div>
-
 
     <div class="content">
-    <h3><a href="/article/setting-up-a-ubuntu-server/">Set up Ubuntu &#43; PHP7 &#43; Nginx &#43; MySQL Stack</a></h3>
+    <h3><a href="/article/performance-characterization-of-suricata-thread-models/">Performance Characterization of Suricata&#39;s Thread Models</a></h3>
     <div class="meta">
-        <span class="date moment">2014-02-09</span>
+        <span class="date moment">2017-12-24</span>
 
         
             <span class="categories">
                 
-                    <a href="/categories/tutorial">tutorial</a>
+                    <a href="/categories/project">project</a>
                 
             </span>
         
@@ -118,13 +111,91 @@
     </div>
 
     
-        <p>This tutorial introduces how to set up a LEMP (Linux + Nginx + MySQL + PHP-FPM) stack on Ubuntu Server from scratch.</p>
-
-<p></p>
-
         
-            <a href="/article/setting-up-a-ubuntu-server/" class="more">Continue reading</a>
-        
+
+<p><a href="/article/benchmarking-suricata-in-different-isolation-systems-using-tcpreplay/">In a previous project</a> my fellow <a href="https://www.cs.purdue.edu/people/graduate-students/asheoran/">Amit Sheoran</a> and I examined how well <a href="https://suricata-ids.org/">Suricata IDS</a> runs inside Docker container and virtual machines. In April 2017, we further examined Suricata&rsquo;s various thread models, as a project for Purdue CS525 Parallel Computing course. We&rsquo;ll first introduce the thread models, and compare them in terms of performance and resource utilization.</p>
+
+<h2 id="suricata-s-multi-thread-architecture">Suricata&rsquo;s Multi-Thread Architecture</h2>
+
+<p>Compared to <a href="https://www.snort.org/">Snort</a>, the biggest feature of Suricata is that it adopts multi-threaded design &ldquo;to achieve high performance&rdquo;. In a high-level picture, the design consists of four thread modules and three runmodes.</p>
+
+<h3 id="thread-modules">Thread Modules</h3>
+
+<p>A thread module can be seen as a type of work to process a packet. There are four major thread modules:</p>
+
+<ul>
+<li>Packet acquisition &ndash; Acquires packets from network.</li>
+<li>Decode and Stream Application layer &ndash; Decodes the data and handles TCP reassembly, etc.</li>
+<li>Detection &ndash; Matches the decoded data against Rules.</li>
+<li>Output &ndash; Deals with logging, and alerting.</li>
+</ul>
+
+<p>[Fig1]</p>
+
+<p>Each thread can execute one or more thread module, depending on the runmode configuration.</p>
+
+<h3 id="runmodes">Runmodes</h3>
+
+<p>Suricata supports multiple runmodes to handle incoming packets:</p>
+
+<ul>
+<li>Single &ndash; Single-threaded mode.</li>
+<li>AutoFP &ndash; The task of processing a packet is pipelined to multiple stages. Each thread handles one stage, and there is at least one thread in a stage.</li>
+<li>Workers – Multiple workers, each of which single-handedly processes the packets it acquires (i.e., each thread runs all thread modules).</li>
+</ul>
+
+<p>We will introduce AutoFP and Workers modes in more detail.</p>
+
+<h4 id="autofp-mode">AutoFP Mode</h4>
+
+<p>In AutoFP mode, multiple threads try to acquire packets, and then put the packets to next stage of the pipeline for further processing. We refer to threads on packet acquisition stage as packet acquisition threads (PAQ), threads decoding packets as decoders, etc.</p>
+
+<p>[Fig2]</p>
+
+<h4 id="workers-mode">Workers Mode</h4>
+
+<p>In &ldquo;workers&rdquo; mode, multiple threads can receive packets and the thread that receives the packet executes all thread modules to process the packet.</p>
+
+<p>[Fig 3]</p>
+
+<h4 id="single-mode">Single Mode</h4>
+
+<p>Single mode is equivalent to workers mode with one worker thread.</p>
+
+<h2 id="test-methodology">Test Methodology</h2>
+
+<p>We rely on <a href="https://github.com/xybu/cs590-nfv">the test environment setup we made in NFV project</a>, and tweak the following parameters in the Suricata config:</p>
+
+<ul>
+<li>Runmode = {autofp, workers}</li>
+<li>Number of (packet capture threads, decoding threads) = (1, 1) to (16, 32).</li>
+<li>Number of NICs</li>
+</ul>
+
+<p>against various levels of workload generated by iperf and TCPreplay, and then collect performance and resource usage metrics. Suricata runs on bare metal.</p>
+
+<h3 id="testbed-spec">Testbed Spec</h3>
+
+<p>Both sender and receiver hosts have the following hardware spec:</p>
+
+<ul>
+<li>CPU: 2x Intel Xeon E5-2620 v4 @ 2.10GHz, 2 Sockets, 8 Cores Per Socket with HT disabled.</li>
+<li>RAM: 64 GB</li>
+<li>NICs: Intel I-350 Gigabit Ethernet</li>
+</ul>
+
+<p>and runs Ubuntu Server 16.04.2 LTS.</p>
+
+<h3 id="experiment-setup-iperf">Experiment Setup &ndash; iperf</h3>
+
+<h3 id="experiment-setup-tcpreplay">Experiment Setup &ndash; TCPreplay</h3>
+
+<h2 id="evaluating-performance-and-resource-usage">Evaluating Performance and Resource Usage</h2>
+
+<h2 id="analyzing-runmodes-with-intel-vtune">Analyzing Runmodes with Intel vTune</h2>
+
+<h2 id="conclusion">Conclusion</h2>
+
     
 </div>
 
@@ -133,73 +204,15 @@
     <div class="tags">
         <i class="fa fa-tags"></i>
         
-            <a href="/tags/ubuntu">ubuntu</a>
+            <a href="/tags/purdue">purdue</a>
         
-            <a href="/tags/php">php</a>
+            <a href="/tags/networking">networking</a>
         
-            <a href="/tags/nginx">nginx</a>
+            <a href="/tags/project">project</a>
         
-            <a href="/tags/mysql">mysql</a>
+            <a href="/tags/suricata">suricata</a>
         
-            <a href="/tags/linux">linux</a>
-        
-    </div>
-    
-
-
-</article>
-
-            
-        </div>
-    
-        <div class="article-wrapper u-cf">
-            
-                <a class="bubble" href="/code/a-comparison-of-php-micro-frameworks/">
-    <i class="fa fa-fw fa-code"></i>
-</a>
-
-<article class="default article">
-    
-
-    <div class="content">
-    <h3><a href="/code/a-comparison-of-php-micro-frameworks/">A Comparison of PHP Micro-frameworks</a></h3>
-    <div class="meta">
-        <span class="date moment">2014-02-03</span>
-
-        
-            <span class="categories">
-                
-                    <a href="/categories/tutorial">tutorial</a>
-                
-            </span>
-        
-
-        
-            <span class="author"><a href="/author/xbu">xbu</a></span>
-        
-    </div>
-
-    
-        <p>I have a few projects that need PHP server side. After a few trials to write classes myself I realized there must be wheels already invented (&ldquo;frameworks&rdquo;). After some research I found myself prefer micro-frameworks strongly over some full-fledged frameworks. And further research did give me some interesting names.</p>
-
-<p></p>
-
-        
-            <a href="/code/a-comparison-of-php-micro-frameworks/" class="more">Continue reading</a>
-        
-    
-</div>
-
-    
-    
-    <div class="tags">
-        <i class="fa fa-tags"></i>
-        
-            <a href="/tags/php">php</a>
-        
-            <a href="/tags/framework">framework</a>
-        
-            <a href="/tags/comparison">comparison</a>
+            <a href="/tags/benchmark">benchmark</a>
         
     </div>
     
@@ -207,18 +220,31 @@
 
 </article>
 
-            
-        </div>
-    
-
-    
-    <div class="paginator">
-        
-
         
     </div>
 
+    <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "xbu" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
+     
 
         </div>
 

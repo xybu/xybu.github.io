@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xbu.me/article/performance-characterization-of-suricata-thread-models/</loc>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xbu.me/page/about/</loc>
     <lastmod>2017-11-01T13:18:45+01:00</lastmod>
   </url>
@@ -110,7 +115,7 @@
   
   <url>
     <loc>https://xbu.me/</loc>
-    <lastmod>2017-11-01T13:18:45+01:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -122,7 +127,7 @@
   
   <url>
     <loc>https://xbu.me/article/</loc>
-    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -140,7 +145,7 @@
   
   <url>
     <loc>https://xbu.me/tags/benchmark/</loc>
-    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -271,7 +276,7 @@
   
   <url>
     <loc>https://xbu.me/tags/networking/</loc>
-    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -313,19 +318,19 @@
   
   <url>
     <loc>https://xbu.me/tags/project/</loc>
-    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xbu.me/categories/project/</loc>
-    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xbu.me/tags/purdue/</loc>
-    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -367,7 +372,7 @@
   
   <url>
     <loc>https://xbu.me/tags/suricata/</loc>
-    <lastmod>2016-09-16T02:39:00-05:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -421,7 +426,7 @@
   
   <url>
     <loc>https://xbu.me/author/xbu/</loc>
-    <lastmod>2017-11-01T13:18:45+01:00</lastmod>
+    <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
