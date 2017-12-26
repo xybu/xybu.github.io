@@ -227,14 +227,14 @@
   </url>
   
   <url>
-    <loc>https://xbu.me/categories/hack/</loc>
-    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
+    <loc>https://xbu.me/tags/hack/</loc>
+    <lastmod>2016-08-07T00:11:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xbu.me/tags/hack/</loc>
-    <lastmod>2016-08-07T00:11:00-05:00</lastmod>
+    <loc>https://xbu.me/categories/hack/</loc>
+    <lastmod>2014-06-28T16:34:00-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -317,13 +317,13 @@
   </url>
   
   <url>
-    <loc>https://xbu.me/categories/project/</loc>
+    <loc>https://xbu.me/tags/project/</loc>
     <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://xbu.me/tags/project/</loc>
+    <loc>https://xbu.me/categories/project/</loc>
     <lastmod>2017-12-24T20:44:00-08:00</lastmod>
     <priority>0</priority>
   </url>

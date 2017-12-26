@@ -113,6 +113,8 @@
     
         
 
+<p>(The article is still under construction.)</p>
+
 <h1 id="performance-characterization-of-suricata-s-thread-models">Performance Characterization of Suricata&rsquo;s Thread Models</h1>
 
 <p><a href="/article/benchmarking-suricata-in-different-isolation-systems-using-tcpreplay/">In a previous project</a> my fellow <a href="https://www.cs.purdue.edu/people/graduate-students/asheoran/">Amit Sheoran</a> and I examined how well <a href="https://suricata-ids.org/">Suricata IDS</a> runs inside Docker container and virtual machine environments. In April 2017, we further examined Suricata&rsquo;s various thread models, as a project for Purdue CS525 Parallel Computing course. We&rsquo;ll first introduce the thread models, and compare them in terms of performance and resource utilization.</p>
@@ -279,23 +281,54 @@ CPU usage increases linearly to the number of packet acquisition threads (PAQ), 
 
 <h3 id="autofp-mode-1">AutoFP Mode</h3>
 
-<h4 id="thread-concurrency">Thread Concurrency</h4>
+<p>The analysis was based on running Suricata with 8 PAQ threads and 4 decoder
+threads, 8X workload, and 2 NICs.</p>
+
+<p>It confirmed what we observed from the experiment that AutoFP mode has higher
+level of concurrency compared to Workers mode. The average CPU usage is ~1000%.
+However, recall that the performance does not improve even though more resource
+is used.</p>
+
+<p><img src="/images/suricata-thread-model/vtune_suricata_autofp_thread_concurrency.png" alt="Suricata shows low degree of concurrency in autofp mode." /></p>
 
 <h4 id="contentions">Contentions</h4>
+
+<p>With the help of Locks and Waits analysis of Intel vTune, we see that the
+majority of CPU resource is spent on <code>poll()</code>. The second point of contention
+is a condition variable to receive packets from the queue.</p>
+
+<p>This is also reflected in the lower part of the screenshot. The 16 PAQ threads
+(&ldquo;RX&rdquo; threads) are busy polling I/O events. And the load is not balanced in
+neither PAQ threads nor decoder threads.</p>
+
+<p><img src="/images/suricata-thread-model/vtune_suricata_autofp_contentions.png" alt="Threads shows high level of contentions in autofp mode." /></p>
 
 <h4 id="busy-paq-threads">Busy PAQ Threads</h4>
 
 <h3 id="workers-mode-1">Workers Mode</h3>
 
-<h4 id="thread-concurrency-1">Thread Concurrency</h4>
+<p>Intel vTune confirmed that Workers mode had poor degree of thread concurrency
+and barely used more than two cores during its execution. The following
+screenshots are from analyzing Suricata with 8 workers, 8X workload, and 2 NICs.
+Note that Suricata creates 8 workers for each NIC, so there are 16 workers in
+total.</p>
+
+<p><img src="/images/suricata-thread-model/vtune_suricata_workers_thread_concurrency.png" alt="Suricata shows low degree of concurrency in workers mode." /></p>
 
 <h4 id="contentions-1">Contentions</h4>
 
-<h4 id="imbalanced-load">Imbalanced Load</h4>
+<p>We see that the mutex to control fetching flows from hash is a major point of
+contention. About 300 seconds out of ~360 seconds’ execution is spent here.
+Besides, the load among the 16 workers (8 workers per NIC) is highly
+imbalanced, even though the TCPreplay processes provide same load.</p>
+
+<p><img src="/images/suricata-thread-model/vtune_suricata_workers_imbalanced_load.png" alt="The workload is highly imbalanced among workers." /></p>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>From what we observed, neither multi-thread modes of Suricata scale to the number of available cores:</p>
+<p>While more threads lead to higher resource usage (particularly in autofp mode),
+they do not translate into higher performance. From what we observed, neither
+multi-thread modes of Suricata scale to the number of available cores:</p>
 
 <ul>
 <li><p>AutoFP mode (Speedup &lt;= 1.13)</p>
@@ -315,7 +348,10 @@ CPU usage increases linearly to the number of packet acquisition threads (PAQ), 
 
 <p>And neither modes scale to the number of NICs.</p>
 
-<p>The multi-thread design does not give Suricata the scalability it wants, nor give it performance advantage over Snort. To improve performance Suricata should rethink its thread model and reduce contentions as much as possible.</p>
+<p>The multi-thread design does not give Suricata the scalability it wants, nor
+give it performance advantage over single-threaded Snort. To improve
+performance, Suricata should rethink its thread model and reduce contentions
+as much as possible.</p>
 
     
 </div>
