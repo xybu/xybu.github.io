@@ -19,6 +19,8 @@
 
 
         
+
+        
         <title>Another Dimension  | Performance Characterization of Suricata&#39;s Thread Models</title>
     </head>
     <body class="bilberry-hugo-theme">
@@ -113,19 +115,19 @@
     
         
 
-<p>(The article is still under construction.)</p>
-
-<h1 id="performance-characterization-of-suricata-s-thread-models">Performance Characterization of Suricata&rsquo;s Thread Models</h1>
-
-<p><a href="/article/benchmarking-suricata-in-different-isolation-systems-using-tcpreplay/">In a previous project</a> my fellow <a href="https://www.cs.purdue.edu/people/graduate-students/asheoran/">Amit Sheoran</a> and I examined how well <a href="https://suricata-ids.org/">Suricata IDS</a> runs inside Docker container and virtual machine environments. In April 2017, we further examined Suricata&rsquo;s various thread models, as a project for Purdue CS525 Parallel Computing course. We&rsquo;ll first introduce the thread models, and compare them in terms of performance and resource utilization.</p>
+<p><a href="/article/benchmarking-suricata-in-different-isolation-systems-using-tcpreplay/">In a previous project</a> my fellow <a href="https://www.cs.purdue.edu/people/graduate-students/asheoran/">Amit Sheoran</a> and I examined how well <a href="https://suricata-ids.org/">Suricata IDS</a> runs inside Docker container and virtual machine environments. In April 2017, we further examined Suricata&rsquo;s various thread models, as a project for Purdue CS525 Parallel Computing course. In this article we first introduce the thread models, and then compare them in terms of performance and resource utilization.</p>
 
 <h2 id="suricata-s-multi-thread-architecture">Suricata&rsquo;s Multi-Thread Architecture</h2>
 
-<p>Compared to <a href="https://www.snort.org/">Snort</a>, the biggest feature of Suricata is that it adopts multi-threaded design &ldquo;to achieve high performance&rdquo;. In a high-level picture, the design consists of four thread modules and three runmodes.</p>
+<p>Compared to <a href="https://www.snort.org/">Snort IDS</a>, the biggest feature of Suricata
+is that it adopts multi-threaded design to achieve high performance. In a
+high-level picture, the design consists of four <em>thread modules</em> and three
+<em>runmodes</em>.</p>
 
 <h3 id="thread-modules">Thread Modules</h3>
 
-<p>A thread module can be seen as a type of work to process a packet. There are four major thread modules:</p>
+<p>A thread module can be seen as a type of work to process a packet. There are
+four major thread modules:</p>
 
 <ul>
 <li>Packet acquisition &ndash; Acquires packets from network.</li>
@@ -134,7 +136,7 @@
 <li>Output &ndash; Deals with logging, and alerting.</li>
 </ul>
 
-<p>[Fig1]</p>
+<p><img src="/images/suricata-thread-model/fig1.png" alt="Suricata Packet Processing Pipeline" /></p>
 
 <p>Each thread can execute one or more thread module, depending on the runmode configuration.</p>
 
@@ -145,22 +147,20 @@
 <ul>
 <li>Single &ndash; Single-threaded mode.</li>
 <li>AutoFP &ndash; The task of processing a packet is pipelined to multiple stages. Each thread handles one stage, and there is at least one thread in a stage.</li>
-<li>Workers – Multiple workers, each of which single-handedly processes the packets it acquires (i.e., each thread runs all thread modules).</li>
+<li>Workers – Multiple workers, each of which single-handedly processes the packets it acquires (i.e., each thread runs all thread modules).</li>
 </ul>
-
-<p>We will introduce AutoFP and Workers modes in more detail.</p>
 
 <h4 id="autofp-mode">AutoFP Mode</h4>
 
 <p>In AutoFP mode, multiple threads try to acquire packets, and then put the packets to next stage of the pipeline for further processing. We refer to threads on packet acquisition stage as packet acquisition threads (PAQ), threads decoding packets as decoders, etc.</p>
 
-<p>[Fig2]</p>
+<p><img src="/images/suricata-thread-model/fig2.png" alt="Suricata autofp mode" /></p>
 
 <h4 id="workers-mode">Workers Mode</h4>
 
 <p>In &ldquo;workers&rdquo; mode, multiple threads can receive packets and the thread that receives the packet executes all thread modules to process the packet.</p>
 
-<p>[Fig 3]</p>
+<p><img src="/images/suricata-thread-model/fig3.png" alt="Suricata workers mode" /></p>
 
 <h4 id="single-mode">Single Mode</h4>
 
@@ -188,96 +188,150 @@
 <li>NICs: Intel I-350 Gigabit Ethernet</li>
 </ul>
 
-<p>and runs Ubuntu Server 16.04.2 LTS. The tests were based on Suricata 3.2, but there haven&rsquo;t been significant changes to its thread model as of Dec 2017.</p>
+<p>and runs Ubuntu Server 16.04.2 LTS. The tests were based on Suricata 3.2, but
+there haven&rsquo;t been significant changes to its thread model as of Dec 2017.</p>
 
-<h3 id="experiment-iperf">Experiment &ndash; iperf</h3>
+<h3 id="experiment-with-iperf">Experiment with iperf</h3>
 
-<p>When using <a href="https://iperf.fr/">iperf</a>, we use multiple client-server pairs to generate traffic, which can be pure TCP or UDP packets. We also tweak packet size,  bandwidth, and number of parallel streams. Iperf server end runs on the same machine as Suricata, and one NIC can be used by one or more iperf pair.</p>
+<p>When using <a href="https://iperf.fr/">iperf</a>, we use multiple client-server pairs to
+generate traffic, which can be pure TCP or UDP packets. We also tweak packet
+size,  bandwidth, and number of parallel streams. Iperf server end runs on the
+same machine as Suricata, and one NIC can be used by one or more iperf pair.</p>
 
-<p>[fig]</p>
+<p><img src="/images/suricata-thread-model/fig4.png" alt="iperf experiment setup" /></p>
 
-<p>However, there is one issue with iperf approach. In order to compare the thread models of Suricata, we need controllable, constant packets-per-second (pps) workload to stress it.
-And since packet payload does not matter much to Suricata and our NIC is 1Gbps, packets must be small. Due to TCP congestion control, pps from iperf varies greatly over time and is beyond our control.</p>
+<p>However, there is one issue with iperf approach. In order to compare thread
+models of Suricata, we need controllable, constant packets-per-second (pps)
+workload during stress test. And since packet payload does not matter much to
+Suricata and our NIC is 1Gbps, packets must be small. Due to TCP congestion
+control, pps from iperf varies greatly over time and is beyond our control.</p>
 
-<p>Figure  shows the number of packets generated by iperf over time for one of the test runs.
- pps varies over time, but throughput (bps) is kept constant over this entire duration.
- This is done by increasing the packet size when the packet generation rate falls.</p>
+<p>Figure 5 shows the number of packets generated by iperf over time for one of the
+test runs. pps varies over time, but throughput (bps) is kept constant over
+this entire duration. iperf automatically increases the packet size when packet
+generation rate falls.</p>
 
-<p>[fig]</p>
+<p><img src="/images/suricata-thread-model/fig5.png" alt="iperf does not generate constant pps" /></p>
 
-<p>Since pps generated by iperf is neither constant nor controllable over time, the total number of packets sent to Suricata for handling differs for each iteration of the same test. So we cannot guarantee all packet drops are due to Suricata, and data points generated by iperf cannot be used as a basis for comparison. We use TCPreplay to generate workload.</p>
+<p>Since pps generated by iperf is neither constant nor controllable over time, the
+total number of packets sent to Suricata for handling differs for each iteration
+of the same test. Therefore, we cannot guarantee all packet drops are due to
+Suricata, and data points generated by iperf cannot be used as a basis for
+comparison. We resort to TCPreplay to generate workload instead.</p>
 
-<h3 id="experiment-tcpreplay">Experiment &ndash; TCPreplay</h3>
+<h3 id="experiment-with-tcpreplay">Experiment with TCPreplay</h3>
 
-<p>TCPreplay replays a trace file onto a NIC notwithstanding network condition, so the behavior is reproducible across runs. We use an ISTS’12 trace, snort.log.1425823194, to generate the traffic. It generates 55.42 Mbps at 6264.04 pps for approx. 22 seconds. To generate higher workloads, up to 16 instances of TCPreplay per NIC are used. As a baseline, we verified that the testbed system is capable of handling peak workload of 16 TCPreplay instances without packet drop.
-All reported drops therefore are caused by Suricata.</p>
+<p>TCPreplay replays a trace file onto a NIC notwithstanding network condition, so
+the behavior is reproducible across runs. We use the ISTS’12 trace introduced in
+our previous Suricata project, <code>snort.log.1425823194</code>, as workload traffic. It
+generates ~55.42 Mbps at 6264.04 pps for approx. 22 seconds. To generate more
+workload, up to 16 instances of TCPreplay per NIC are run concurrently. As a
+baseline, we verified that the testbed system is capable of handling peak
+workload of 16 TCPreplay instances without packet drop. All reported drops are
+therefore caused by Suricata.</p>
 
-<p>[fig]</p>
+<p><img src="/images/suricata-thread-model/fig6.png" alt="TCPreplay experiment setup" /></p>
 
 <h2 id="evaluating-performance-and-resource-usage">Evaluating Performance and Resource Usage</h2>
 
 <p>The result is kind of surprising.</p>
 
-<h3 id="results-autofp-mode">Results &ndash; AutoFP Mode</h3>
+<h3 id="result-of-autofp-mode">Result of AutoFP Mode</h3>
 
-<h4 id="scalability-paqs-decoders">Scalability (#PAQs &lt;= #Decoders)</h4>
+<h4 id="scalability">Scalability</h4>
 
-<p>Figure shows the comparison of Suricata performance, in terms of packets decoded vs. packets dropped, with 1 PAQ and 1, 2 and 4 decoders. It can be seen that performance does not scale with the number of decoders. This is also the case when 2 packet acquisition threads are used, as shown by Figure.</p>
+<p>Figure 7a shows the comparison of Suricata performance, in terms of the number
+of packets decoded vs. packets dropped, with 1 PAQ and 1, 2 and 4 decoders. It
+can be seen that performance does not scale with the number of decoders &ndash;
+4 decoders do not do better than 1 decoder at 16X workload, while there is no
+resource bottleneck. This is also the case when 2 PAQ threads are used, as
+shown by Figure 7b.</p>
 
-<p>[Fig]</p>
+<p><img src="/images/suricata-thread-model/fig7a.png" alt="autofp Result with 1PAQ, 1-4 Decoders" /></p>
 
-<p>Comparing the two plots, we see that performance does not scale with the number of PAQ threads, either. Similar observations can be made from other data points.</p>
+<p><img src="/images/suricata-thread-model/fig7b.png" alt="autofp Result with 2PAQs, 1-4 Decoders" /></p>
 
-<p>[Fig]</p>
+<p>Comparing the two plots vertically, we see that performance does not scale with
+the number of PAQ threads, either.</p>
 
 <h4 id="resource-usage">Resource Usage</h4>
 
-<p>Figure shows the CPU usage and the number of packets processed by Suricata in autofp mode.
-CPU usage increases linearly to the number of packet acquisition threads (PAQ), however, this does not translate to performance gain. RAM usage (not shown in the figure) increases sub-linearly and will not be a bottleneck.</p>
+<p>Figure 8a shows the CPU usage and the number of packets processed by Suricata in
+autofp mode with 8X load. CPU usage increases roughly linearly to the number of
+packet acquisition threads (PAQ); however, this does not translate to
+performance gain. RAM usage (not shown in the figure) increases sub-linearly and
+is not a bottleneck. The pattern shows again on 16X load.</p>
 
-<p>[Fig]</p>
+<p><img src="/images/suricata-thread-model/fig8a.png" alt="autofp resource usage w.r.t. PAQs, 1 Decoder" /></p>
 
-<h4 id="scalability-paqs-decoders-1">Scalability (#PAQs &gt;= #Decoders)</h4>
+<p>Worrying that it could be a bottleneck to have only one decoder thread, we
+plotted figure 8b where there are two decoders. We see that CPU usage drops on
+nodes PAQ={3, 4} but increases on nodes PAQ={1, 2}.</p>
 
-<p>Figure 9 compares Suricata performance with various number of PAQ threads (1,2,4,8) and multiple decoder threads (1,2). It can be seen that</p>
+<p><img src="/images/suricata-thread-model/fig8b.png" alt="autofp resource usage w.r.t. PAQs, 2 Decoders" /></p>
 
-<ul>
-<li>The performance does not scale with the number of packet acquisition threads or decode threads, and</li>
-<li>CPU usage increases almost linearly with the number of PAQ threads, but it does not translate to performance.</li>
-</ul>
+<p>It&rsquo;s also noteworthy that with more threads, Suricata becomes less capable to
+handle the traffic it manages to handle with fewer threads.</p>
 
 <h4 id="multiple-nics">Multiple NICs</h4>
 
-<p>Figure 10 shows the performance in autofp mode with 2 NICs. Suricata does not handle more packets even after multiple NICs are available.</p>
+<p>Figure 9 shows the performance in autofp mode with 2 NICs. Compare it with
+Figure 8a and we see that Suricata does not handle more packets even though
+the traffic could have been dealt with &ldquo;with more freedom&rdquo;. Besides, CPU usage
+almost doubles at nodes PAQ={2, 3, 4}, but more than half of total traffic
+is dropped.</p>
+
+<p><img src="/images/suricata-thread-model/fig9.png" alt="autofp result with two NICs" /></p>
 
 <h4 id="summary">Summary</h4>
 
-<p>In all data points, we never see a speedup &gt; 1.13 (in terms of packets processed) for autofp mode.</p>
+<p>We see that on autofp runmode:</p>
+
+<ul>
+<li>Performance does not scale with the number of packet acquisition threads or
+decoder threads;</li>
+<li>CPU usage increases almost linearly with the number of PAQ threads, but it
+does not translate to performance improvement;</li>
+<li>Performance does not improve when traffic is distributed on different NICs.</li>
+</ul>
+
+<p>In all data points, we never see a speedup &gt; 1.13 (in terms of packets
+processed) for autofp mode.</p>
 
 <h3 id="results-workers-mode">Results &ndash; Workers Mode</h3>
 
-<p>Workers mode differs from autofp mode in that a packet, once captured, is never transferred to another thread for processing.</p>
+<p>Workers mode differs from autofp mode in that a packet, once captured, is never
+transferred to another thread for processing. So in workers mode, there is no
+distinction between PAQ threads and decoder threads. It&rsquo;s verified both from
+code and from experiment that in this mode, Suricata takes the number PAQ
+threads from config and ignores the number of decoder threads.</p>
 
-<p>As seen from the graph, the performance decreases as the number of PAQ threads increases.</p>
+<p>As seen from figure 10, performance gets worse as the number of worker threads
+increases, while CPU usage increases. However, CPU usage seems capped to 200%.</p>
 
-<p>[Fig]</p>
+<p><img src="/images/suricata-thread-model/fig10.png" alt="workers mode result with 1 decoder and 1-4 PAQs" /></p>
 
-<p>Figure 12 shows the performance comparison of worker mode with 1 and 2 packet decoding threads. It can be seen that the system performance does not scale with the number of PAQ threads.</p>
+<p>Figure 11 is almost the same as figure 10. This confirms that the number of
+decoder threads config is not used in workers mode.</p>
 
-<p>[Fig]</p>
+<p><img src="/images/suricata-thread-model/fig11.png" alt="workers mode result with 2 decoders and 1-4 PAQs" /></p>
 
-<p>Figure 13 shows the performance in worker mode with 2 NICs.</p>
+<p>Figure 12 shows the performance in worker mode with 2 NICs. The total number
+of worker threads is <code>#NICs * #PAQs</code>, but still, about half of total traffic
+is dropped no matter how we increase the number of threads.</p>
 
-<p>[Fig]</p>
+<p><img src="/images/suricata-thread-model/fig12.png" alt="workers mode result with two NICs" /></p>
 
 <h4 id="summary-1">Summary</h4>
 
-<p>Performance of the system does not increase significantly even after multiple NICs are available.
- In all the data points, the best speedup we see is 1.28 for workers mode.</p>
+<p>Performance of the system gets worse as the number of threads increases, but
+resource usage does not increase as sharply as in autofp mode. In all the data
+points, the best speedup we see is 1.28 for workers mode.</p>
 
 <h2 id="analyzing-runmodes-with-intel-vtune">Analyzing Runmodes with Intel vTune</h2>
 
-<p>Intel vTune is a tool for software performance analysis. We used it to further analyze the unexpected result of Suricata thread models.</p>
+<p>Intel vTune is a tool for software performance analysis. We used it to further
+analyze the unexpected result of Suricata thread models.</p>
 
 <h3 id="autofp-mode-1">AutoFP Mode</h3>
 
@@ -298,12 +352,11 @@ majority of CPU resource is spent on <code>poll()</code>. The second point of co
 is a condition variable to receive packets from the queue.</p>
 
 <p>This is also reflected in the lower part of the screenshot. The 16 PAQ threads
-(&ldquo;RX&rdquo; threads) are busy polling I/O events. And the load is not balanced in
-neither PAQ threads nor decoder threads.</p>
+(&ldquo;RX&rdquo; threads) are busy polling I/O events, and the worker threads (&ldquo;W&rdquo; threads)
+are mostly idle. The load is not balanced in neither PAQ threads nor decoder
+threads.</p>
 
 <p><img src="/images/suricata-thread-model/vtune_suricata_autofp_contentions.png" alt="Threads shows high level of contentions in autofp mode." /></p>
-
-<h4 id="busy-paq-threads">Busy PAQ Threads</h4>
 
 <h3 id="workers-mode-1">Workers Mode</h3>
 
@@ -326,19 +379,19 @@ imbalanced, even though the TCPreplay processes provide same load.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>While more threads lead to higher resource usage (particularly in autofp mode),
-they do not translate into higher performance. From what we observed, neither
-multi-thread modes of Suricata scale to the number of available cores:</p>
+<p><strong>While more threads lead to higher resource usage (particularly in autofp mode),
+they do not translate into better performance for Suricata.</strong> From what we
+observed, neither multi-thread modes of Suricata scale to the number of
+available cores:</p>
 
 <ul>
-<li><p>AutoFP mode (Speedup &lt;= 1.13)</p>
+<li>AutoFP mode (Speedup &lt;= 1.13)
 
 <ul>
 <li>Trivial to no speedup with increased number of PAQ or decoder threads.</li>
 <li>Exhibits linear CPU usage increase, however, by wasting most of CPU cycles in polling.</li>
 </ul></li>
-
-<li><p>Workers mode (Speedup &lt;= 1.28)</p>
+<li>Workers mode (Speedup &lt;= 1.28)
 
 <ul>
 <li>Exhibits worse performance than AutoFP mode but uses less resource.</li>
@@ -348,10 +401,9 @@ multi-thread modes of Suricata scale to the number of available cores:</p>
 
 <p>And neither modes scale to the number of NICs.</p>
 
-<p>The multi-thread design does not give Suricata the scalability it wants, nor
-give it performance advantage over single-threaded Snort. To improve
-performance, Suricata should rethink its thread model and reduce contentions
-as much as possible.</p>
+<p>The multi-thread design does not give Suricata the scalability it wants. To
+improve performance, redesigning and benchmarking a new thread model is
+imperative and contentions must be reduced by as much as possible.</p>
 
     
 </div>
@@ -531,8 +583,10 @@ ga('send', 'pageview');
 
         
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js" integrity="sha256-TbOIe++NbC9P3KTtUMJ5wcROlBdnRqrPleLdpPg3xxE=" crossorigin="anonymous"></script>
-        <script src="/dist/theme.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js" integrity="sha256-TbOIe++NbC9P3KTtUMJ5wcROlBdnRqrPleLdpPg3xxE=" crossorigin="anonymous" type="application/javascript"></script>
+        <script src="/dist/theme.js" type="application/javascript"></script>
+
+        
 
         <script>
             $(document).ready(function() {
